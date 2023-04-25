@@ -63,7 +63,7 @@ class _BMIcalculatorState extends State<BMIcalculator> {
         appBar: AppBar(
           backgroundColor: Colors.purple,
           title: const Text(
-            "BMI Calculator",
+            "BMI Calculator ",
             style: TextStyle(color: Colors.white),
           ),
         ),
