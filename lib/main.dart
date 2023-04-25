@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(home: BMIcalculator()));
+  runApp(const MaterialApp(home: BMIcalculator(),
+  debugShowCheckedModeBanner: false,));
 }
 
 class BMIcalculator extends StatefulWidget {
@@ -17,6 +20,42 @@ class _BMIcalculatorState extends State<BMIcalculator> {
   List listitem = [
     "Male" , "Female"
   ];
+   final mycontroller = TextEditingController();
+   final mycontroller1 =TextEditingController();
+   double weight= 0;
+   double height=0;
+
+  double answer = 0;
+
+   void BMI(){
+
+    answer=weight/pow(height, 2);
+   }
+
+
+  void dispose(){
+    mycontroller.dispose();
+    mycontroller1.dispose();
+    super.dispose();
+  }
+
+  void Calculate(double value){
+    if (value >=18.5 && value<=24.9 && Valuechoose=="Male"){
+      print('Healthy weight');
+    }else if (value >=25.0&& value<=29.9 && Valuechoose=="Male"){
+      print('Over weight');
+    }else if(value >30.0 && Valuechoose=="Male"){
+      print('Obesity weight');
+    }else if(value <18.5 && Valuechoose=="Female"){
+      print('Healthy weight');
+    }else if(value >18.5 && value<=24.9 && Valuechoose=="Female"){
+      print('Healthy weight');
+    }else if(value >25.0 && value<=29.9 && Valuechoose=="Female"){
+      print('Over weight');
+    }else if(value>30.0 && Valuechoose == "Female"){
+      print('Obesity');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,24 +72,27 @@ class _BMIcalculatorState extends State<BMIcalculator> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Padding(
+             Padding(
               padding: EdgeInsets.all(8),
               child: TextField(
+                controller: mycontroller1,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: " Enter your Height in meters "),
               ),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             Padding(
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(8),
               child: TextField(
+                controller: mycontroller,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: " Enter your weight in KG "),
+
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             DropdownButton(
               hint: Text("Select Gender"),
               value: Valuechoose,
@@ -66,11 +108,18 @@ class _BMIcalculatorState extends State<BMIcalculator> {
                 );
               }).toList(),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             Padding(
               padding: const EdgeInsets.all(8),
               child: TextButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  setState((){
+                    weight= double.parse(mycontroller.text) ;
+                    height= double.parse(mycontroller1.text);
+                    BMI();
+                    Calculate(answer);
+                  })
+                  },
                 style: TextButton.styleFrom(
                     backgroundColor: Colors.purple,
                     primary: Colors.white,
@@ -78,7 +127,7 @@ class _BMIcalculatorState extends State<BMIcalculator> {
 
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text("Calculate"), Icon(Icons.calculate)],
+                  children: const [Text("Calculate"), Icon(Icons.calculate)],
                 ),
               ),
             ),
@@ -118,18 +167,18 @@ class NavigationDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.man),
-            title: Text("Men"),
+            leading: const Icon(Icons.man),
+            title: const Text("Men"),
             onTap: () => {
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => MenBMI()))
+                  .push(MaterialPageRoute(builder: (context) => const MenBMI()))
             },
           ),
           ListTile(
-            leading: Icon(Icons.girl),
-            title: Text("Women"),
+            leading: const Icon(Icons.girl),
+            title: const Text("Female"),
             onTap: () => {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>WomenBMI()))
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const WomenBMI()))
             },
           ),
         ],
@@ -145,78 +194,80 @@ class MenBMI extends StatelessWidget {
       appBar: AppBar(
         title: const Text('BMI Weight Status Chart - Men '),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Table(
-          border: TableBorder.all(),
-          children: const [
-            TableRow(
-              children: [
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'BMI',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Table(
+            border: TableBorder.all(),
+            children: const [
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Center(
+                      child: Text(
+                        'BMI',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'Weight Status',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                  TableCell(
+                    child: Center(
+                      child: Text(
+                        'Weight Status',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            TableRow(
-              children: [
-                TableCell(
-                  child: Center(
-                    child: Text('18.5 - 24.9'),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Center(
+                      child: Text('18.5 - 24.9'),
+                    ),
                   ),
-                ),
-                TableCell(
-                  child: Center(
-                    child: Text('Healthy Weight'),
+                  TableCell(
+                    child: Center(
+                      child: Text('Healthy Weight'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            TableRow(
-              children: [
-                TableCell(
-                  child: Center(
-                    child: Text('25.0 - 29.9'),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Center(
+                      child: Text('25.0 - 29.9'),
+                    ),
                   ),
-                ),
-                TableCell(
-                  child: Center(
-                    child: Text('Overweight'),
+                  TableCell(
+                    child: Center(
+                      child: Text('Overweight'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            TableRow(
-              children: [
-                TableCell(
-                  child: Center(
-                    child: Text('30.0 and Above'),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Center(
+                      child: Text('30.0 and Above'),
+                    ),
                   ),
-                ),
-                TableCell(
-                  child: Center(
-                    child: Text('Obesity'),
+                  TableCell(
+                    child: Center(
+                      child: Text('Obesity'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -232,92 +283,94 @@ class WomenBMI extends StatelessWidget {
       appBar: AppBar(
         title: const Text('BMI Weight Status Chart - Men '),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Table(
-          border: TableBorder.all(),
-          children: const [
-            TableRow(
-              children: [
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'BMI',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Table(
+            border: TableBorder.all(),
+            children: const [
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Center(
+                      child: Text(
+                        'BMI',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'Weight Status',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                  TableCell(
+                    child: Center(
+                      child: Text(
+                        'Weight Status',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            TableRow(
-              children: [
-                TableCell(
-                  child: Center(
-                    child: Text('Below 18.5'),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Center(
+                      child: Text('Below 18.5'),
+                    ),
                   ),
-                ),
-                TableCell(
-                  child: Center(
-                    child: Text('Under Weight'),
+                  TableCell(
+                    child: Center(
+                      child: Text('Under Weight'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            TableRow(
-              children: [
-                TableCell(
-                  child: Center(
-                    child: Text('18.5—24.9'),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Center(
+                      child: Text('18.5—24.9'),
+                    ),
                   ),
-                ),
-                TableCell(
-                  child: Center(
-                    child: Text('Healthy weight'),
+                  TableCell(
+                    child: Center(
+                      child: Text('Healthy weight'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            TableRow(
-              children: [
-                TableCell(
-                  child: Center(
-                    child: Text('25.0—29.9'),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Center(
+                      child: Text('25.0—29.9'),
+                    ),
                   ),
-                ),
-                TableCell(
-                  child: Center(
-                    child: Text('Over weight'),
+                  TableCell(
+                    child: Center(
+                      child: Text('Over weight'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            TableRow(
-              children: [
-                TableCell(
-                  child: Center(
-                    child: Text('30.0 and Above'),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Center(
+                      child: Text('30.0 and Above'),
+                    ),
                   ),
-                ),
-                TableCell(
-                  child: Center(
-                    child: Text('Obesity'),
+                  TableCell(
+                    child: Center(
+                      child: Text('Obesity'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
