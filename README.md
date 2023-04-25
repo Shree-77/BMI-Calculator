@@ -4,10 +4,10 @@ A new Flutter project.
 
 ## Features
 
-Calculate the BMI of male individuals.
-Calculate the BMI of female individuals.
-Display the BMI value with a corresponding interpretation (underweight, normal weight, overweight, or obese).
-Allow the user to input their weight and height using either metric or imperial units.
+* Calculate the BMI of male individuals.
+* Calculate the BMI of female individuals.
+* Display the BMI value with a corresponding interpretation (underweight, normal weight, overweight, or obese).
+* Allow the user to input their weight and height using either metric or imperial units.
 
 
 
