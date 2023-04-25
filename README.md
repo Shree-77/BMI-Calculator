@@ -1,16 +1,17 @@
-# bmi
+# BMI Calculator
 
 A new Flutter project.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+Calculate the BMI of male individuals.
+Calculate the BMI of female individuals.
+Display the BMI value with a corresponding interpretation (underweight, normal weight, overweight, or obese).
+Allow the user to input their weight and height using either metric or imperial units.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Contributing
+This project is open to contributions. Feel free to submit a pull request or open an issue if you find a bug or have a feature request.
+
+
