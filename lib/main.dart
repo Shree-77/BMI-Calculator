@@ -3,8 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MaterialApp(home: BMIcalculator(),
-  debugShowCheckedModeBanner: false,));
+  runApp(const MaterialApp(home: BMIcalculator(), debugShowCheckedModeBanner: false));
 }
 
 class BMIcalculator extends StatefulWidget {
@@ -15,47 +14,99 @@ class BMIcalculator extends StatefulWidget {
 }
 
 class _BMIcalculatorState extends State<BMIcalculator> {
-
   var Valuechoose;
-  List listitem = [
-    "Male" , "Female"
-  ];
-   final mycontroller = TextEditingController();
-   final mycontroller1 =TextEditingController();
-   double weight= 0;
-   double height=0;
+  dynamic gender;
+
+  List listitem = ["female", "male"];
+
+  final mycontroller = TextEditingController();
+  final mycontroller1 = TextEditingController();
+
+  double weight = 0;
+  double height = 0;
 
   double answer = 0;
+  String result = '';
 
-   void BMI(){
+  void BMI() {
+    answer = weight / pow(height, 2);
+    Calculate(answer);
+  }
 
-    answer=weight/pow(height, 2);
-   }
+  void Calculate(double value) {
+    String lowercaseGender = gender.toString().toLowerCase();
+
+    if (lowercaseGender != "male" || lowercaseGender != "female") {
+      setState(() {
+        result='Please Select Gender';
+      });
+    }
 
 
-  void dispose(){
+    if (value >= 18.5 && value <= 24.9 && lowercaseGender == "male") {
+      setState(() {
+        result = 'Healthy weight';
+      });
+    }else if (value < 18.5 && lowercaseGender == "male" ) {
+      setState(() {
+        result = 'Underweight';
+      });
+    } else if (value >= 25.0 && value <= 29.9 && lowercaseGender == "male") {
+      setState(() {
+        result = 'Overweight';
+      });
+    } else if (value > 30.0 && lowercaseGender == "male") {
+      setState(() {
+        result = 'Obese';
+      });
+    } else if (value < 18.5 && lowercaseGender == "female" ) {
+      setState(() {
+        result = 'Underweight';
+      });
+    } else if (value > 18.5 && value <= 24.9 && lowercaseGender == "female") {
+      setState(() {
+        result = 'Healthy weight';
+      });
+    } else if (value > 25.0 && value <= 29.9 && lowercaseGender == "female") {
+      setState(() {
+        result = 'Overweight';
+      });
+    } else if (value > 30.0 && lowercaseGender == "female") {
+      setState(() {
+        result = 'Obese';
+      });
+    }else {
+      setState(() {
+        result='Invalid Input';
+      });
+    }
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('BMI Result'),
+        content: Text('Your BMI is $value, which means you are $result'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+
+  }
+
+  void dispose() {
     mycontroller.dispose();
     mycontroller1.dispose();
     super.dispose();
   }
 
-  void Calculate(double value){
-    if (value >=18.5 && value<=24.9 && Valuechoose=="Male"){
-      print('Healthy weight');
-    }else if (value >=25.0&& value<=29.9 && Valuechoose=="Male"){
-      print('Over weight');
-    }else if(value >30.0 && Valuechoose=="Male"){
-      print('Obesity weight');
-    }else if(value <18.5 && Valuechoose=="Female"){
-      print('Healthy weight');
-    }else if(value >18.5 && value<=24.9 && Valuechoose=="Female"){
-      print('Healthy weight');
-    }else if(value >25.0 && value<=29.9 && Valuechoose=="Female"){
-      print('Over weight');
-    }else if(value>30.0 && Valuechoose == "Female"){
-      print('Obesity');
-    }
+  void reuse(){
+    mycontroller.clear();
+    mycontroller1.clear();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,38 +123,44 @@ class _BMIcalculatorState extends State<BMIcalculator> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-             Padding(
+            Padding(
               padding: EdgeInsets.all(8),
               child: TextField(
                 controller: mycontroller1,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: " Enter your Height in meters "),
+                  border: OutlineInputBorder(),
+                  labelText: "Enter your Height in meters",
+                ),
               ),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 20),
             Padding(
               padding: EdgeInsets.all(8),
               child: TextField(
                 controller: mycontroller,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: " Enter your weight in KG "),
-
+                  border: OutlineInputBorder(),
+                  labelText: "Enter your weight in KG",
+                ),
               ),
             ),
             const SizedBox(height: 20),
             DropdownButton(
               hint: Text("Select Gender"),
               value: Valuechoose,
-              onChanged: (newValue){
+              onChanged: (newValue) {
                 setState(() {
-                  Valuechoose=newValue;
+                  Valuechoose = newValue;
+                  gender = newValue;
                 });
-                },
-              items: listitem.map((valueItem){
+              },
+              items: listitem.map((valueItem) {
                 return DropdownMenuItem(
                   value: valueItem,
+
+
                   child:Text(valueItem),
                 );
               }).toList(),
@@ -118,6 +175,7 @@ class _BMIcalculatorState extends State<BMIcalculator> {
                     height= double.parse(mycontroller1.text);
                     BMI();
                     Calculate(answer);
+                    reuse();
                   })
                   },
                 style: TextButton.styleFrom(
